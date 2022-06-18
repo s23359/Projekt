@@ -1,0 +1,44 @@
+﻿table{
+    width: 50%
+}
+td{
+    text-align: center;
+    padding: 20px;
+}
+img{
+    width: 200px;
+    height: 200px;
+}
+#buttonstable{
+    width: 100%;
+}
+#special {
+    background-color: #3a0647;
+    color: white;
+    width: 200px;
+    height: 40px;
+    font-size-adjust: inherit;
+    border-radius: 15px;
+    margin: auto;
+    display: block;
+    border-color: white;
+}
+    #special:hover {
+        background-color: rgb(5, 39, 103);
+    }
+
+button {
+    background-color: rgb(5, 39, 103);
+    color: white;
+    width: 200px;
+    height: 40px;
+    font-size-adjust: inherit;
+    border-radius: 15px;
+    margin: auto;
+    display: block;
+    border-color: white;
+}
+
+    button:hover {
+        background-color: #3a0647;
+    }

@@ -1,0 +1,20 @@
+#welcome[b-582nlkx2yw] {
+    text-align: center;
+    font-family: Arial;
+    text-transform: uppercase;
+}
+button[b-582nlkx2yw] {
+    background-color: rgb(5, 39, 103);
+    color: white;
+    width: 200px;
+    height: 40px;
+    font-size-adjust: inherit;
+    border-radius: 15px;
+    margin: auto;
+    display: block;
+    border-color: white;
+}
+
+    button:hover[b-582nlkx2yw] {
+        background-color: #3a0647;
+    }

@@ -1,0 +1,44 @@
+table[b-mc4m7uqfoy]{
+    width: 50%
+}
+td[b-mc4m7uqfoy]{
+    text-align: center;
+    padding: 20px;
+}
+img[b-mc4m7uqfoy]{
+    width: 200px;
+    height: 200px;
+}
+#buttonstable[b-mc4m7uqfoy]{
+    width: 100%;
+}
+#special[b-mc4m7uqfoy] {
+    background-color: #3a0647;
+    color: white;
+    width: 200px;
+    height: 40px;
+    font-size-adjust: inherit;
+    border-radius: 15px;
+    margin: auto;
+    display: block;
+    border-color: white;
+}
+    #special:hover[b-mc4m7uqfoy] {
+        background-color: rgb(5, 39, 103);
+    }
+
+button[b-mc4m7uqfoy] {
+    background-color: rgb(5, 39, 103);
+    color: white;
+    width: 200px;
+    height: 40px;
+    font-size-adjust: inherit;
+    border-radius: 15px;
+    margin: auto;
+    display: block;
+    border-color: white;
+}
+
+    button:hover[b-mc4m7uqfoy] {
+        background-color: #3a0647;
+    }

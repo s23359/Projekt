@@ -1,0 +1,49 @@
+#welcome[b-zxwicpj4kt]{
+    text-align: center;
+    font-family: Arial;
+    text-transform: uppercase;
+}
+input[b-zxwicpj4kt] {
+    text-align: center;
+    font-family: Arial;
+    text-transform: uppercase;
+    margin: auto;
+    display: block;
+}
+em[b-zxwicpj4kt]{
+    align-content: center;
+}
+table[b-zxwicpj4kt] {
+    width: 100%;
+    scroll-padding-top: 20px;
+    margin: 1em;
+}
+
+td[b-zxwicpj4kt] {
+    border-bottom: 1px solid #ddd;
+}
+
+#data:hover[b-zxwicpj4kt] {
+     background-image: linear-gradient(to right, rgb(5, 39, 103) 0%, #3a0647 70%);
+     color: white;
+}
+
+thead[b-zxwicpj4kt] {
+    font-weight: bold;
+}
+
+
+button[b-zxwicpj4kt] {
+    background-color: rgb(5, 39, 103);
+    color: white;
+    width: 200px;
+    height: 40px;
+    font-size-adjust: inherit;
+    border-radius: 15px;
+    margin: auto;
+    display: block;
+    border-color: white;
+}
+    button:hover[b-zxwicpj4kt] {
+        background-color: #3a0647;
+    }

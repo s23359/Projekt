@@ -1,0 +1,150 @@
+﻿@page "/Tickers/details/{text}"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using APBDProject.Shared.Models
+@using Syncfusion.Blazor.Charts
+@using Syncfusion.Blazor.Layouts
+@using System.Net
+@using System.IO
+@using System.Text.Json;  
+@attribute [Authorize]
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<h3>@text Details: </h3>
+
+@if (ticker == null)
+{
+    <a>Loading...</a>
+}
+else
+{
+    <SfDashboardLayout CellSpacing="@(new double[]{20 ,20 })" Columns="5" MediaQuery="max-width: 1300px; max-height: 1300px">
+        <DashboardLayoutPanels>
+            <DashboardLayoutPanel SizeY=3 Column=1>
+                <ContentTemplate>
+                    <div>
+                        <table style="place-content:center">
+                            <tr><td><img src="@ticker.branding.icon_url?apiKey=0YTL0kKbNICyA4p7ptpBGeK4aMGp2IjO" /></td></tr>
+                            <tr><td><b>@ticker.ticker</b></td></tr>
+                            <tr><td><b>@ticker.name</b></td></tr>
+                            <tr><td><a href="@ticker.homepage_url"><b>@ticker.homepage_url</b></a></td></tr>
+                            <tr><td>@ticker.description</td></tr>
+                        </table>
+                    </div>
+                </ContentTemplate>
+            </DashboardLayoutPanel>
+            <DashboardLayoutPanel SizeX=3 SizeY=2 Column=1>
+                <ContentTemplate>
+                    <div>
+                        <SfStockChart Title="OHCL">
+                            <StockChartSeriesCollection>
+                                <StockChartSeries DataSource="@Data" Type="ChartSeriesType.Candle" XName="Time" High="h" Low="h" Open="o" Close="c" Volume="v" />
+                            </StockChartSeriesCollection>
+                        </SfStockChart>
+                    </div>
+                </ContentTemplate>
+            </DashboardLayoutPanel>
+            <DashboardLayoutPanel SizeY=2 Column=4>
+                <ContentTemplate>
+                    <div>
+                        <table id="buttonstable" style="padding: 05em">
+                            <tr><td><button @onclick="@(() => AddToWatchlist())" id="special">Add to watchlist</button></td></tr>
+                            <tr><td><button @onclick="@(() => CurrentDay())">Current day</button></td></tr>
+                            <tr><td><button @onclick="@(() => ThisWeek())">1 week ago</button></td></tr>
+                            <tr><td><button @onclick="@(() => ThisMonth())">1 month ago</button></td></tr>
+                            <tr><td><button @onclick="@(() => LastThree())">3 months ago</button></td></tr>
+                        </table>
+                    </div>
+                </ContentTemplate>
+            </DashboardLayoutPanel>
+        </DashboardLayoutPanels>
+    </SfDashboardLayout>
+}
+<style>
+    .e-panel-content {
+        align-content: center;
+        text-align: center;
+        margin-top: 10px;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public string text { get; set; }
+
+    public TickerInfo ticker { get; set; }
+
+    public class Stocks
+    {
+        public string Time { get; set; }
+        public double o { get; set; }
+        public double h { get; set; }
+        public double c { get; set; }
+        public double l { get; set; }
+        public double v { get; set; }
+    }
+    public List<Stocks> Data = new List<Stocks>();
+    public List<Stocks> AllStocks = new List<Stocks>();
+
+    public Stocks today;
+    public string user;
+    public string responseString = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        user = authState.User.Identity.Name;
+
+        var json = await Http.GetFromJsonAsync<TickerInfoResult>($"https://api.polygon.io/v3/reference/tickers/{text}?apiKey=0YTL0kKbNICyA4p7ptpBGeK4aMGp2IjO");
+        ticker = json.results;
+
+        var dateString1 = DateTime.Now.ToString("yyyy-MM-dd");
+        var dateString2 = DateTime.Today.AddMonths(-3).ToString("yyyy-MM-dd");
+        var json2 = await Http.GetFromJsonAsync<OhlcResponse>($"https://api.polygon.io/v2/aggs/ticker/{text}/range/1/day/{dateString2}/{dateString1}?adjusted=true&sort=asc&limit=120&apiKey=0YTL0kKbNICyA4p7ptpBGeK4aMGp2IjO");
+        List<OHLC> data = json2.results;
+
+        double numberOfDays = (DateTime.Parse(dateString1) - DateTime.Parse(dateString2)).TotalDays;
+        DateTime startingDate = DateTime.Today.AddMonths(-3);
+        int record = data.Count;
+        foreach (OHLC o in data)
+        {
+            AllStocks.Add(new Stocks
+            {
+                Time = startingDate.AddDays(numberOfDays / record).ToString("yyyy-MM-dd"),
+                o = o.o,
+                h = o.h,
+                c = o.c,
+                l = o.l,
+                v = o.v
+            });
+
+            startingDate = startingDate.AddDays((numberOfDays / record));
+        }
+        Data.AddRange(AllStocks.ToList());
+    }
+    private void CurrentDay()
+    {
+        var first = AllStocks.Max(e => DateTime.Parse(e.Time));
+        today = AllStocks.First(e => DateTime.Parse(e.Time) == first);
+        Data = new List<Stocks>();
+        Data.Add(today);
+    }
+    private void ThisWeek()
+    {
+        Data = new List<Stocks>(AllStocks.Where(e => (DateTime.Parse(e.Time) > DateTime.Today.AddDays(-7))).ToList());
+    }
+    private void ThisMonth()
+    {
+        Data = new List<Stocks>(AllStocks.Where(e => (DateTime.Parse(e.Time) > DateTime.Today.AddMonths(-1))).ToList());
+    }
+    private void LastThree()
+    {
+        Data = new List<Stocks>(AllStocks.ToList());
+    }
+    private async Task AddToWatchlist()
+    {
+        using var response = await Http.PostAsJsonAsync($"/watchlist/{user}", ticker);
+        responseString = response.IsSuccessStatusCode.ToString();
+    }
+}

@@ -1,0 +1,82 @@
+﻿@page "/Dashboard"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using APBDProject.Shared.Models
+@attribute [Authorize]
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager navigationManager
+<h3 id="welcome">Search for tickers</h3>
+
+<div><input id="welcome" type="text" @bind="@val" @oninput="@((e) => { if(((string)e.Value).Length != 0)@val=(string)e.Value; })" /><br>
+<button @onclick="@(() => { OnChangeTickers(); })">Szukaj</button></div>
+
+@if(val == null || val.Length == 0)
+{
+    <p><div id="welcome">Use the above input field to find tickers that interest You</div></p>
+}
+else if (tickers == null)
+{
+    
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Ticker</th>
+                <th>Name</th>
+                <th>Market</th>
+                <th>Locale</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ticker in tickers)
+            {
+                <tr id="data" @onclick="@(() => { OpenDetails(ticker.ticker); })">
+                    <td>@ticker.ticker</td>
+                    <td>@ticker.name</td>
+                    <td>@ticker.market</td>
+                    <td>@ticker.locale</td>
+                    <td>@ticker.type</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<TickerSearch> tickers;
+    private string user;
+    private string val;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        user = authState.User.Identity.Name;
+
+        try
+        {
+            tickers = null;
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+    private async void OnChangeTickers()
+    {
+        if (val != null && val.Length != 0)
+        {
+            var json = await Http.GetFromJsonAsync<SearchTickersResponse>($"https://api.polygon.io/v3/reference/tickers?active=true&sort=ticker&order=asc&limit=200&search={val}&apiKey=0YTL0kKbNICyA4p7ptpBGeK4aMGp2IjO");
+            tickers = json.results;
+        }
+    }
+
+    private void OpenDetails(string id)
+    {
+        navigationManager.NavigateTo($"/tickers/details/{id}");
+    }
+}

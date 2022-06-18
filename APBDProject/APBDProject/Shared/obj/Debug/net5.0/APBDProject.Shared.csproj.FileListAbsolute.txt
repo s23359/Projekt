@@ -1,0 +1,12 @@
+C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Shared\bin\Debug\net5.0\APBDProject.Shared.deps.json
+C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Shared\bin\Debug\net5.0\APBDProject.Shared.dll
+C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Shared\bin\Debug\net5.0\ref\APBDProject.Shared.dll
+C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Shared\bin\Debug\net5.0\APBDProject.Shared.pdb
+C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Shared\obj\Debug\net5.0\APBDProject.Shared.csproj.AssemblyReference.cache
+C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Shared\obj\Debug\net5.0\APBDProject.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Shared\obj\Debug\net5.0\APBDProject.Shared.AssemblyInfoInputs.cache
+C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Shared\obj\Debug\net5.0\APBDProject.Shared.AssemblyInfo.cs
+C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Shared\obj\Debug\net5.0\APBDProject.Shared.csproj.CoreCompileInputs.cache
+C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Shared\obj\Debug\net5.0\APBDProject.Shared.dll
+C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Shared\obj\Debug\net5.0\ref\APBDProject.Shared.dll
+C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Shared\obj\Debug\net5.0\APBDProject.Shared.pdb
