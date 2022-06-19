@@ -29,7 +29,12 @@ namespace APBDProject.Server.Services
                         await _context.Tickers.AddAsync(t);
                         await _context.SaveChangesAsync();
                     }
-                    await _context.AddAsync(new Observed
+
+                    var isObserved = await _context.Observations.Where(e => e.TickerName.Equals(t.ticker) && e.UserId.Equals(_context.Users.Where(u => u.UserName.Equals(id)).Select(u => u.Id).First())).ToListAsync();
+                    if (isObserved.Count != 0)
+                        throw new Exception("It's already on your watchlist!");
+
+                    await _context.Observations.AddAsync(new Observed
                     {
                         TickerName = t.ticker,
                         UserId = _context.Users.Where(e => e.UserName.Equals(id)).Select(e => e.Id).First()

@@ -14,6 +14,7 @@ namespace APBDProject.Server.Data
     {
         public DbSet<Observed> Observations { get; set; }
         public DbSet<Ticker> Tickers { get; set; }
+        public DbSet<TickerOhlc> Ohlcs { get; set; }
         public ApplicationDbContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
@@ -26,11 +27,18 @@ namespace APBDProject.Server.Data
             {
                 t.HasKey(e => e.ticker);
             });
+
             builder.Entity<Observed>(o =>
             {
                 o.HasKey(e => e.ObservationId);
                 o.HasOne(e => e.User).WithMany(e => e.ObservedTickers).HasForeignKey(e => e.UserId);
                 o.HasOne(e => e.Ticker).WithMany(e => e.Users).HasForeignKey(e => e.TickerName);
+            });
+            builder.Entity<TickerOhlc>(o =>
+            {
+                o.HasKey(e => e.OhlcId);
+
+                o.HasOne(e => e.MyTicker).WithMany(e => e.Ohlcs).HasForeignKey(e => e.Ticker); 
             });
         }
     }

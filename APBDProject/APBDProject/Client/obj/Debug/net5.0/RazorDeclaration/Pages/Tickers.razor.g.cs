@@ -97,28 +97,28 @@ using Syncfusion.Blazor;
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Tickers.razor"
-using Microsoft.AspNetCore.Authorization;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 3 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Tickers.razor"
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 4 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Tickers.razor"
+#line 13 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\_Imports.razor"
 using APBDProject.Shared.Models;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Tickers.razor"
+#line 14 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\_Imports.razor"
+using Microsoft.AspNetCore.Authorization;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\_Imports.razor"
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 2 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Tickers.razor"
            [Authorize]
 
 #line default
@@ -133,11 +133,12 @@ using APBDProject.Shared.Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 49 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Tickers.razor"
+#line 42 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Tickers.razor"
        
-    private List<TickerSearch> tickers;
+    private TickerSearch[] tickers;
     private string user;
     private string val;
+    private bool click = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -158,14 +159,14 @@ using APBDProject.Shared.Models;
     {
         if (val != null && val.Length != 0)
         {
-            var json = await Http.GetFromJsonAsync<SearchTickersResponse>($"https://api.polygon.io/v3/reference/tickers?active=true&sort=ticker&order=asc&limit=200&search={val}&apiKey=0YTL0kKbNICyA4p7ptpBGeK4aMGp2IjO");
-            tickers = json.results;
+            tickers = await Http.GetFromJsonAsync<TickerSearch[]>($"/tickers/{val}");
         }
+        click = false;
     }
 
     private void OpenDetails(string id)
     {
-        navigationManager.NavigateTo($"/tickers/details/{id}");
+        navigationManager.NavigateTo($"/details/{id}");
     }
 
 #line default

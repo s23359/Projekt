@@ -9,9 +9,12 @@ namespace APBDProject.Server.Models
     {
         public string ticker { get; set; }
         public string name { get; set; }
+        public string description { get; set; }
+        public string homepage_url { get; set; }
         public string market { get; set; }
         public string locale { get; set; }
 
-        public ICollection<Observed> Users { get; set; }
+        public virtual ICollection<Observed> Users { get; set; }
+        public virtual ICollection<TickerOhlc> Ohlcs { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace APBDProject.Server.Models
         public string UserId { get; set; }
         public string TickerName { get; set; }
 
-        public ApplicationUser User { get; set; }
-        public Ticker Ticker { get; set; }
+        public virtual ApplicationUser User { get; set; }
+        public virtual Ticker Ticker { get; set; }
     }
 }

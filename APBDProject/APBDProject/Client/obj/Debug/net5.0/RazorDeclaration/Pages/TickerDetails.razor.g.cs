@@ -97,69 +97,69 @@ using Syncfusion.Blazor;
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
-using Microsoft.AspNetCore.Authorization;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 3 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 4 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
+#line 13 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\_Imports.razor"
 using APBDProject.Shared.Models;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
+#line 14 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\_Imports.razor"
+using Microsoft.AspNetCore.Authorization;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\_Imports.razor"
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 2 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
 using Syncfusion.Blazor.Charts;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
+#line 3 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
 using Syncfusion.Blazor.Layouts;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
+#line 4 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
 using System.Net;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 8 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
+#line 5 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
 using System.IO;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 9 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
+#line 6 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
 using System.Text.Json;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 10 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
+#line 7 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
            [Authorize]
 
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/Tickers/details/{text}")]
+    [Microsoft.AspNetCore.Components.RouteAttribute("/details/{text}")]
     public partial class TickerDetails : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -168,26 +168,16 @@ using System.Text.Json;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 72 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
+#line 66 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
        
     [Parameter]
     public string text { get; set; }
 
     public TickerInfo ticker { get; set; }
+    public List<Stock> Data = new List<Stock>();
+    public List<Stock> AllStocks = new List<Stock>();
 
-    public class Stocks
-    {
-        public string Time { get; set; }
-        public double o { get; set; }
-        public double h { get; set; }
-        public double c { get; set; }
-        public double l { get; set; }
-        public double v { get; set; }
-    }
-    public List<Stocks> Data = new List<Stocks>();
-    public List<Stocks> AllStocks = new List<Stocks>();
-
-    public Stocks today;
+    public Stock today;
     public string user;
     public string responseString = "";
 
@@ -196,51 +186,35 @@ using System.Text.Json;
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         user = authState.User.Identity.Name;
 
-        var json = await Http.GetFromJsonAsync<TickerInfoResult>($"https://api.polygon.io/v3/reference/tickers/{text}?apiKey=0YTL0kKbNICyA4p7ptpBGeK4aMGp2IjO");
-        ticker = json.results;
+        ticker = await Http.GetFromJsonAsync<TickerInfo>($"/tickers/info/{text}");
 
-        var dateString1 = DateTime.Now.ToString("yyyy-MM-dd");
-        var dateString2 = DateTime.Today.AddMonths(-3).ToString("yyyy-MM-dd");
-        var json2 = await Http.GetFromJsonAsync<OhlcResponse>($"https://api.polygon.io/v2/aggs/ticker/{text}/range/1/day/{dateString2}/{dateString1}?adjusted=true&sort=asc&limit=120&apiKey=0YTL0kKbNICyA4p7ptpBGeK4aMGp2IjO");
-        List<OHLC> data = json2.results;
 
-        double numberOfDays = (DateTime.Parse(dateString1) - DateTime.Parse(dateString2)).TotalDays;
-        DateTime startingDate = DateTime.Today.AddMonths(-3);
-        int record = data.Count;
-        foreach (OHLC o in data)
-        {
-            AllStocks.Add(new Stocks
-            {
-                Time = startingDate.AddDays(numberOfDays / record).ToString("yyyy-MM-dd"),
-                o = o.o,
-                h = o.h,
-                c = o.c,
-                l = o.l,
-                v = o.v
-            });
+        Stock[] data = await Http.GetFromJsonAsync<Stock[]>($"/tickers/ohlc/{text}");
 
-            startingDate = startingDate.AddDays((numberOfDays / record));
-        }
-        Data.AddRange(AllStocks.ToList());
+        AllStocks.AddRange(data);
+
+        Data.AddRange(data);
+
+        var response = Http.PostAsJsonAsync($"/tickers", new TickerWithOhlc { ohlcs = data, ticker = ticker });
     }
     private void CurrentDay()
     {
         var first = AllStocks.Max(e => DateTime.Parse(e.Time));
         today = AllStocks.First(e => DateTime.Parse(e.Time) == first);
-        Data = new List<Stocks>();
+        Data = new List<Stock>();
         Data.Add(today);
     }
     private void ThisWeek()
     {
-        Data = new List<Stocks>(AllStocks.Where(e => (DateTime.Parse(e.Time) > DateTime.Today.AddDays(-7))).ToList());
+        Data = new List<Stock>(AllStocks.Where(e => (DateTime.Parse(e.Time) > DateTime.Today.AddDays(-7))).ToList());
     }
     private void ThisMonth()
     {
-        Data = new List<Stocks>(AllStocks.Where(e => (DateTime.Parse(e.Time) > DateTime.Today.AddMonths(-1))).ToList());
+        Data = new List<Stock>(AllStocks.Where(e => (DateTime.Parse(e.Time) > DateTime.Today.AddMonths(-1))).ToList());
     }
     private void LastThree()
     {
-        Data = new List<Stocks>(AllStocks.ToList());
+        Data = new List<Stock>(AllStocks.ToList());
     }
     private async Task AddToWatchlist()
     {

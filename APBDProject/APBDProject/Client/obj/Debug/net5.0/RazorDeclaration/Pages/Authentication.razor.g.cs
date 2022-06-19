@@ -97,6 +97,20 @@ using Syncfusion.Blazor;
 #line hidden
 #nullable disable
 #nullable restore
+#line 13 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\_Imports.razor"
+using APBDProject.Shared.Models;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 14 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\_Imports.razor"
+using Microsoft.AspNetCore.Authorization;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 2 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Authentication.razor"
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 

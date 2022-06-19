@@ -14,6 +14,5 @@ namespace APBDProject.Shared.Models
         public string homepage_url { get; set; }
         public string locale { get; set; }
         public string market { get; set; }
-        public Branding branding { get; set; } 
     }
 }

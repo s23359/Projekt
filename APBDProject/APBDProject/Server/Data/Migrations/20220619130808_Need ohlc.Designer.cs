@@ -4,14 +4,16 @@ using APBDProject.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace APBDProject.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220619130808_Need ohlc")]
+    partial class Needohlc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,9 +154,6 @@ namespace APBDProject.Server.Data.Migrations
 
                     b.Property<string>("Ticker")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Time")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("V")
                         .HasColumnType("float");

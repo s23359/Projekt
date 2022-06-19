@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace APBDProject.Shared.Models
 {
-    public class Branding
+    public class TickerWithOhlc
     {
-        public string icon_url { get; set; }
+        public TickerInfo ticker { get; set; }
+        public ICollection<Stock> ohlcs { get; set; }
     }
 }

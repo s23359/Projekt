@@ -97,35 +97,35 @@ using Syncfusion.Blazor;
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
+#line 14 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\_Imports.razor"
 using Microsoft.AspNetCore.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
+#line 15 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\_Imports.razor"
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
+#line 2 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
 using APBDProject.Shared.Models;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
+#line 3 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
 using Syncfusion.Blazor.Grids;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
+#line 4 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
            [Authorize]
 
 #line default
@@ -140,7 +140,7 @@ using Syncfusion.Blazor.Grids;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 28 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
+#line 45 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
        
     private string user;
     private TickerInfo[] tickers;
@@ -165,10 +165,15 @@ using Syncfusion.Blazor.Grids;
 
         tickers = await Http.GetFromJsonAsync<TickerInfo[]>($"/watchlist/{user}");
     }
+    private void GoToDetails(string ticker)
+    {
+        navigationManager.NavigateTo($"/details/{ticker}");
+    }
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager navigationManager { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private HttpClient Http { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private AuthenticationStateProvider AuthenticationStateProvider { get; set; }
     }

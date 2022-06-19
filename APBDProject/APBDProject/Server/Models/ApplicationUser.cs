@@ -8,6 +8,6 @@ namespace APBDProject.Server.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public ICollection<Observed> ObservedTickers { get; set; }
+        public virtual ICollection<Observed> ObservedTickers { get; set; }
     }
 }

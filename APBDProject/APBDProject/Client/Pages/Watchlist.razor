@@ -1,11 +1,10 @@
 ﻿@page "/watchlist"
-@using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using APBDProject.Shared.Models
 @using Syncfusion.Blazor.Grids
 @attribute [Authorize]
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject HttpClient Http
+@inject NavigationManager navigationManager 
 
 <h3 id="welcome">Your watchlist:</h3>
 @if (tickers == null)
@@ -21,6 +20,24 @@ else
             <GridColumn Field=@nameof(TickerInfo.name) HeaderText="Name" TextAlign="TextAlign.Center" Width="100"></GridColumn>
             <GridColumn Field=@nameof(TickerInfo.market) HeaderText="Market" TextAlign="TextAlign.Center" Width="100"></GridColumn>
             <GridColumn Field=@nameof(TickerInfo.locale) HeaderText="Locale" TextAlign="TextAlign.Center" Width="100"></GridColumn>
+            <GridColumn HeaderText="Remove from watchlist" Width="50">
+                <Template>
+                    @{
+                        var ticker = (context as TickerInfo);
+                        <SfButton @onclick="@((args) => RemoveFromWatchlist(ticker))" IsToggle="true" IsPrimary="true">Remove from watchlist</SfButton>
+
+                    }
+                </Template>
+            </GridColumn>
+            <GridColumn Width="50" HeaderText="See details">
+                <Template>
+                    @{
+                        var ticker = (context as TickerInfo);
+                        <SfButton @onclick="@((args) => GoToDetails(ticker.ticker))" IsToggle="true" IsPrimary="true">See details</SfButton>
+
+                    }
+                </Template>
+            </GridColumn>
         </GridColumns>
     </SfGrid>
 }
@@ -48,5 +65,9 @@ else
         var response = await Http.PostAsJsonAsync($"/watchlist/delete/{user}", ticker);
 
         tickers = await Http.GetFromJsonAsync<TickerInfo[]>($"/watchlist/{user}");
+    }
+    private void GoToDetails(string ticker)
+    {
+        navigationManager.NavigateTo($"/details/{ticker}");
     }
 }

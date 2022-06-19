@@ -4,14 +4,16 @@ using APBDProject.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace APBDProject.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220619115331_Changed the ticker")]
+    partial class Changedtheticker
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,41 +131,6 @@ namespace APBDProject.Server.Data.Migrations
                     b.HasKey("ticker");
 
                     b.ToTable("Tickers");
-                });
-
-            modelBuilder.Entity("APBDProject.Server.Models.TickerOhlc", b =>
-                {
-                    b.Property<int>("OhlcId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<double>("C")
-                        .HasColumnType("float");
-
-                    b.Property<double>("H")
-                        .HasColumnType("float");
-
-                    b.Property<double>("L")
-                        .HasColumnType("float");
-
-                    b.Property<double>("O")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Ticker")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Time")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("V")
-                        .HasColumnType("float");
-
-                    b.HasKey("OhlcId");
-
-                    b.HasIndex("Ticker");
-
-                    b.ToTable("Ohlcs");
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>
@@ -419,15 +386,6 @@ namespace APBDProject.Server.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("APBDProject.Server.Models.TickerOhlc", b =>
-                {
-                    b.HasOne("APBDProject.Server.Models.Ticker", "MyTicker")
-                        .WithMany("Ohlcs")
-                        .HasForeignKey("Ticker");
-
-                    b.Navigation("MyTicker");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -486,8 +444,6 @@ namespace APBDProject.Server.Data.Migrations
 
             modelBuilder.Entity("APBDProject.Server.Models.Ticker", b =>
                 {
-                    b.Navigation("Ohlcs");
-
                     b.Navigation("Users");
                 });
 #pragma warning restore 612, 618

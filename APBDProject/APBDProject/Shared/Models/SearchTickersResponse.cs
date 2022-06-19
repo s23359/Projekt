@@ -8,5 +8,6 @@ namespace APBDProject.Shared.Models
     public class SearchTickersResponse
     {
         public List<TickerSearch> results { get; set; }      
+        public string next_url { get; set; }
     }
 }
