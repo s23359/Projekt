@@ -74,10 +74,6 @@ namespace APBDProject.Server.Services
                     ons.UserId = null;
                     ons.User = null;
                     await _context.SaveChangesAsync();
-                     _context.Observations.Remove(ons);
-                    var emptyTickers = await _context.Tickers.Include(e => e.Users).Where(e => e.Users.Count == 0).ToListAsync();
-                    _context.RemoveRange(emptyTickers);
-                    await _context.SaveChangesAsync();
                     await transaction.CommitAsync();
                 }
                 catch (Exception e)

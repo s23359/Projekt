@@ -126,34 +126,41 @@ using Syncfusion.Blazor.Charts;
 #nullable disable
 #nullable restore
 #line 3 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
-using Syncfusion.Blazor.Layouts;
+using Syncfusion.Blazor.Navigations;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 4 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
-using System.Net;
+using Syncfusion.Blazor.Layouts;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 5 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
-using System.IO;
+using System.Net;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 6 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
-using System.Text.Json;
+using System.IO;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 7 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
+using System.Text.Json;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 8 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
            [Authorize]
 
 #line default
@@ -168,18 +175,17 @@ using System.Text.Json;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 66 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
+#line 62 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
        
     [Parameter]
     public string text { get; set; }
 
-    public TickerInfo ticker { get; set; }
-    public List<Stock> Data = new List<Stock>();
-    public List<Stock> AllStocks = new List<Stock>();
+    private TickerInfo ticker { get; set; }
+    private List<Stock> Data = new List<Stock>();
+    private List<Stock> AllStocks = new List<Stock>();
 
-    public Stock today;
-    public string user;
-    public string responseString = "";
+    private string user;
+    private string responseString = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -200,7 +206,7 @@ using System.Text.Json;
     private void CurrentDay()
     {
         var first = AllStocks.Max(e => DateTime.Parse(e.Time));
-        today = AllStocks.First(e => DateTime.Parse(e.Time) == first);
+        Stock today = AllStocks.First(e => DateTime.Parse(e.Time) == first);
         Data = new List<Stock>();
         Data.Add(today);
     }

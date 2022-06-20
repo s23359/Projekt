@@ -1,18 +1,24 @@
 ﻿@page "/Dashboard"
+
 @attribute [Authorize]
 @inject HttpClient Http
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager navigationManager
 <h3 id="welcome">Search for tickers</h3>
 
-<div><input id="welcome" type="text" @bind="@val" @oninput="@((e) => { if(((string)e.Value).Length != 0)@val=(string)e.Value; })" /><br>
-<button @onclick="@(() => { OnChangeTickers(); click = true; })">Szukaj</button></div>
+<div>
+    <input id="welcome" type="text" @bind="@val" @oninput="@((e) => { if (((string)e.Value).Length != 0) @val = (string)e.Value; OnChangeTickers(); })" /><br>
+</div>
 
-@if (val != null && tickers == null && click == true)
+@if(val == null || val.Length == 0)
 {
-                <p><em>Loading...</em></p>
+                <p><em>Try to write something in the input</em></p>
 }
-else if(tickers != null)
+else if (tickers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (tickers != null)
 {
     <table class="table">
         <thead>
@@ -39,11 +45,11 @@ else if(tickers != null)
     </table>
 }
 
+
 @code {
     private TickerSearch[] tickers;
     private string user;
     private string val;
-    private bool click = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -64,9 +70,15 @@ else if(tickers != null)
     {
         if (val != null && val.Length != 0)
         {
-            tickers = await Http.GetFromJsonAsync<TickerSearch[]>($"/tickers/{val}");
+            try
+            {
+                tickers = await Http.GetFromJsonAsync<TickerSearch[]>($"/tickers/{val}");
+            }
+            catch(Exception e)
+            {
+                OnChangeTickers();
+            }
         }
-        click = false;
     }
 
     private void OpenDetails(string id)

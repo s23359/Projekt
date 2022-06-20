@@ -3,6 +3,17 @@
     font-family: Arial;
     text-transform: uppercase;
 }
+table {
+    width: 50%
+}
+
+td {
+    text-align: center;
+    padding: 20px;
+}
+#buttonstable {
+    width: 100%;
+}
 button {
     background-color: rgb(5, 39, 103);
     color: white;

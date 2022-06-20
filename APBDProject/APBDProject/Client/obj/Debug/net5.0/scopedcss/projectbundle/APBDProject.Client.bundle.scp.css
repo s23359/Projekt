@@ -8,10 +8,6 @@ td[b-mc4m7uqfoy]{
     text-align: center;
     padding: 20px;
 }
-img[b-mc4m7uqfoy]{
-    width: 200px;
-    height: 200px;
-}
 #buttonstable[b-mc4m7uqfoy]{
     width: 100%;
 }
@@ -100,6 +96,17 @@ button[b-zxwicpj4kt] {
     text-align: center;
     font-family: Arial;
     text-transform: uppercase;
+}
+table[b-582nlkx2yw] {
+    width: 50%
+}
+
+td[b-582nlkx2yw] {
+    text-align: center;
+    padding: 20px;
+}
+#buttonstable[b-582nlkx2yw] {
+    width: 100%;
 }
 button[b-582nlkx2yw] {
     background-color: rgb(5, 39, 103);

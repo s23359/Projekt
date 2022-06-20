@@ -1,13 +1,18 @@
 ﻿@page "/watchlist"
-@using APBDProject.Shared.Models
 @using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Charts 
 @attribute [Authorize]
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject HttpClient Http
-@inject NavigationManager navigationManager 
+@inject NavigationManager navigationManager
 
 <h3 id="welcome">Your watchlist:</h3>
 @if (tickers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (tickers.Length == 0)
 {
     <div>Looks like your watchlist is empty. Go to dashboard and select the ones that you want to see in your watchlist.</div>
 }
@@ -24,7 +29,7 @@ else
                 <Template>
                     @{
                         var ticker = (context as TickerInfo);
-                        <SfButton @onclick="@((args) => RemoveFromWatchlist(ticker))" IsToggle="true" IsPrimary="true">Remove from watchlist</SfButton>
+                        <SfButton @onclick="@((args) => RemoveFromWatchlist(ticker))" CssClass="e-primary">Remove from watchlist</SfButton>
 
                     }
                 </Template>
@@ -33,18 +38,63 @@ else
                 <Template>
                     @{
                         var ticker = (context as TickerInfo);
-                        <SfButton @onclick="@((args) => GoToDetails(ticker.ticker))" IsToggle="true" IsPrimary="true">See details</SfButton>
+                        <SfButton @onclick="@((args) => GoToDetails(ticker.ticker))" CssClass="e-danger">See details</SfButton>
 
                     }
                 </Template>
             </GridColumn>
         </GridColumns>
     </SfGrid>
+    if (selectedTicker != null)
+    {
+                            <h3>@selectedTicker.ticker Details:</h3>
+        <SfTab>
+            <TabItems>
+                <TabItem>
+                    <ChildContent>
+                        <TabHeader Text="Company information"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+                        <div>
+                            <p><b>@selectedTicker.ticker</b></p>
+                            <p><b>@selectedTicker.name</b></p>
+                            <p><a href="@selectedTicker.homepage_url"><b>@selectedTicker.homepage_url</b></a></p>
+                            <p>@selectedTicker.description</p>
+                        </div>
+                    </ContentTemplate>
+                </TabItem>
+                <TabItem>
+                    <ChildContent>
+                        <TabHeader Text="OHLC Chart"></TabHeader>
+                    </ChildContent>
+                    <ContentTemplate>
+                        <div>
+                            <SfStockChart Title="OHCL">
+                                <StockChartSeriesCollection>
+                                    <StockChartSeries DataSource="@Data" Type="ChartSeriesType.Candle" XName="Time" High="h" Low="h" Open="o" Close="c" Volume="v" />
+                                </StockChartSeriesCollection>
+                            </SfStockChart>
+                            <table id="buttonstable" style="padding: 05em"><tr>
+                                <td><button @onclick="@(() => CurrentDay())">Current day</button></td>
+                                <td><button @onclick="@(() => ThisWeek())">1 week ago</button></td>
+                                <td><button @onclick="@(() => ThisMonth())">1 month ago</button></td>
+                                <td><button @onclick="@(() => LastThree())">3 months ago</button></td></tr>
+                            </table>
+                        </div>
+                    </ContentTemplate>
+                </TabItem>
+            </TabItems>
+        </SfTab>
+    }
 }
 
 @code {
     private string user;
     private TickerInfo[] tickers;
+    private TickerInfo selectedTicker;
+
+    private List<Stock> Data = new List<Stock>();
+    private List<Stock> AllStocks = new List<Stock>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -66,8 +116,37 @@ else
 
         tickers = await Http.GetFromJsonAsync<TickerInfo[]>($"/watchlist/{user}");
     }
-    private void GoToDetails(string ticker)
+    private async Task GoToDetails(string ticker)
     {
-        navigationManager.NavigateTo($"/details/{ticker}");
+        selectedTicker = await Http.GetFromJsonAsync<TickerInfo>($"/tickers/info/{ticker}");
+
+
+        Stock[] data = await Http.GetFromJsonAsync<Stock[]>($"/tickers/ohlc/{ticker}");
+
+        AllStocks = new List<Stock>();
+        Data = new List<Stock>();
+
+        AllStocks.AddRange(data);
+
+        Data.AddRange(data);
+    }
+    private void CurrentDay()
+    {
+        var first = AllStocks.Max(e => DateTime.Parse(e.Time));
+        Stock today = AllStocks.First(e => DateTime.Parse(e.Time) == first);
+        Data = new List<Stock>();
+        Data.Add(today);
+    }
+    private void ThisWeek()
+    {
+        Data = new List<Stock>(AllStocks.Where(e => (DateTime.Parse(e.Time) > DateTime.Today.AddDays(-7))).ToList());
+    }
+    private void ThisMonth()
+    {
+        Data = new List<Stock>(AllStocks.Where(e => (DateTime.Parse(e.Time) > DateTime.Today.AddMonths(-1))).ToList());
+    }
+    private void LastThree()
+    {
+        Data = new List<Stock>(AllStocks.ToList());
     }
 }

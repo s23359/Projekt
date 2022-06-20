@@ -97,6 +97,13 @@ using Syncfusion.Blazor;
 #line hidden
 #nullable disable
 #nullable restore
+#line 13 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\_Imports.razor"
+using APBDProject.Shared.Models;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 14 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\_Imports.razor"
 using Microsoft.AspNetCore.Authorization;
 
@@ -112,20 +119,27 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 #nullable disable
 #nullable restore
 #line 2 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
-using APBDProject.Shared.Models;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 3 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
 using Syncfusion.Blazor.Grids;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
+#line 3 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
+using Syncfusion.Blazor.Navigations;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 4 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
+using Syncfusion.Blazor.Charts;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 5 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
            [Authorize]
 
 #line default
@@ -140,10 +154,14 @@ using Syncfusion.Blazor.Grids;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 45 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
+#line 91 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
        
     private string user;
     private TickerInfo[] tickers;
+    private TickerInfo selectedTicker;
+
+    private List<Stock> Data = new List<Stock>();
+    private List<Stock> AllStocks = new List<Stock>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -165,9 +183,38 @@ using Syncfusion.Blazor.Grids;
 
         tickers = await Http.GetFromJsonAsync<TickerInfo[]>($"/watchlist/{user}");
     }
-    private void GoToDetails(string ticker)
+    private async Task GoToDetails(string ticker)
     {
-        navigationManager.NavigateTo($"/details/{ticker}");
+        selectedTicker = await Http.GetFromJsonAsync<TickerInfo>($"/tickers/info/{ticker}");
+
+
+        Stock[] data = await Http.GetFromJsonAsync<Stock[]>($"/tickers/ohlc/{ticker}");
+
+        AllStocks = new List<Stock>();
+        Data = new List<Stock>();
+
+        AllStocks.AddRange(data);
+
+        Data.AddRange(data);
+    }
+    private void CurrentDay()
+    {
+        var first = AllStocks.Max(e => DateTime.Parse(e.Time));
+        Stock today = AllStocks.First(e => DateTime.Parse(e.Time) == first);
+        Data = new List<Stock>();
+        Data.Add(today);
+    }
+    private void ThisWeek()
+    {
+        Data = new List<Stock>(AllStocks.Where(e => (DateTime.Parse(e.Time) > DateTime.Today.AddDays(-7))).ToList());
+    }
+    private void ThisMonth()
+    {
+        Data = new List<Stock>(AllStocks.Where(e => (DateTime.Parse(e.Time) > DateTime.Today.AddMonths(-1))).ToList());
+    }
+    private void LastThree()
+    {
+        Data = new List<Stock>(AllStocks.ToList());
     }
 
 #line default

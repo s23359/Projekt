@@ -118,7 +118,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Tickers.razor"
+#line 3 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Tickers.razor"
            [Authorize]
 
 #line default
@@ -133,12 +133,11 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 42 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Tickers.razor"
+#line 49 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Tickers.razor"
        
     private TickerSearch[] tickers;
     private string user;
     private string val;
-    private bool click = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -159,9 +158,15 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
     {
         if (val != null && val.Length != 0)
         {
-            tickers = await Http.GetFromJsonAsync<TickerSearch[]>($"/tickers/{val}");
+            try
+            {
+                tickers = await Http.GetFromJsonAsync<TickerSearch[]>($"/tickers/{val}");
+            }
+            catch(Exception e)
+            {
+                OnChangeTickers();
+            }
         }
-        click = false;
     }
 
     private void OpenDetails(string id)

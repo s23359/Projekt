@@ -1,5 +1,6 @@
 ﻿@page "/details/{text}"
 @using Syncfusion.Blazor.Charts
+@using Syncfusion.Blazor.Navigations
 @using Syncfusion.Blazor.Layouts
 @using System.Net
 @using System.IO
@@ -16,9 +17,13 @@
 }
 else
 {
-    <SfDashboardLayout CellSpacing="@(new double[]{20 ,20 })" Columns="5" MediaQuery="max-width: 1300px; max-height: 1300px">
-        <DashboardLayoutPanels>
-            <DashboardLayoutPanel SizeY=2 Column=1>
+    <button @onclick="@(() => AddToWatchlist())" id="special">Add to watchlist</button>
+    <SfTab>
+        <TabItems>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="HTML"></TabHeader>
+                </ChildContent>
                 <ContentTemplate>
                     <div>
                         <p><b>@ticker.ticker</b></p>
@@ -27,8 +32,11 @@ else
                         <p>@ticker.description</p>
                     </div>
                 </ContentTemplate>
-            </DashboardLayoutPanel>
-            <DashboardLayoutPanel SizeX=3 SizeY=2 Column=1>
+            </TabItem>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="OHLC Chart"></TabHeader>
+                </ChildContent>
                 <ContentTemplate>
                     <div>
                         <SfStockChart Title="OHCL">
@@ -36,32 +44,20 @@ else
                                 <StockChartSeries DataSource="@Data" Type="ChartSeriesType.Candle" XName="Time" High="h" Low="h" Open="o" Close="c" Volume="v" />
                             </StockChartSeriesCollection>
                         </SfStockChart>
-                    </div>
-                </ContentTemplate>
-            </DashboardLayoutPanel>
-            <DashboardLayoutPanel SizeY=2 Column=4>
-                <ContentTemplate>
-                    <div>
                         <table id="buttonstable" style="padding: 05em">
-                            <tr><td><button @onclick="@(() => AddToWatchlist())" id="special">Add to watchlist</button></td></tr>
-                            <tr><td><button @onclick="@(() => CurrentDay())">Current day</button></td></tr>
-                            <tr><td><button @onclick="@(() => ThisWeek())">1 week ago</button></td></tr>
-                            <tr><td><button @onclick="@(() => ThisMonth())">1 month ago</button></td></tr>
-                            <tr><td><button @onclick="@(() => LastThree())">3 months ago</button></td></tr>
+                            <tr>
+                                <td><button @onclick="@(() => CurrentDay())">Current day</button></td>
+                                <td><button @onclick="@(() => ThisWeek())">1 week ago</button></td>
+                                <td><button @onclick="@(() => ThisMonth())">1 month ago</button></td>
+                                <td><button @onclick="@(() => LastThree())">3 months ago</button></td>
+                            </tr>
                         </table>
                     </div>
                 </ContentTemplate>
-            </DashboardLayoutPanel>
-        </DashboardLayoutPanels>
-    </SfDashboardLayout>
+            </TabItem>
+        </TabItems>
+    </SfTab>
 }
-<style>
-    .e-panel-content {
-        align-content: center;
-        text-align: center;
-        margin-top: 10px;
-    }
-</style>
 
 @code {
     [Parameter]
@@ -71,7 +67,6 @@ else
     private List<Stock> Data = new List<Stock>();
     private List<Stock> AllStocks = new List<Stock>();
 
-    private Stock today;
     private string user;
     private string responseString = "";
 
@@ -94,7 +89,7 @@ else
     private void CurrentDay()
     {
         var first = AllStocks.Max(e => DateTime.Parse(e.Time));
-        today = AllStocks.First(e => DateTime.Parse(e.Time) == first);
+        Stock today = AllStocks.First(e => DateTime.Parse(e.Time) == first);
         Data = new List<Stock>();
         Data.Add(today);
     }

@@ -204,14 +204,14 @@
       "netstandard.dll": "sha256-qE0Q70OyVlHYY\/Y3nwMjfh+zissea9uhfvWMvPWfI7w=",
       "System.Private.CoreLib.dll": "sha256-pdkcl2+OojCfrhxX5eFmKI30wAmhL6s+sCLp7s175k0=",
       "APBDProject.Shared.dll": "sha256-BO2muUEwwx48vI\/A0h6Dkz6ywT5NXkyQ7bw9+a0dIGM=",
-      "APBDProject.Client.dll": "sha256-y9YjW1PuQjIHjP1qKiG+\/y+sb70\/O\/n65FQNyrvnPfk="
+      "APBDProject.Client.dll": "sha256-+dtiYteaSD61517+BFs\/T0UM0QRT93a1iWuDku\/sTsk="
     },
     "extensions": null,
     "lazyAssembly": null,
     "libraryInitializers": null,
     "pdb": {
       "APBDProject.Shared.pdb": "sha256-dypn5Ww636EWWKb+0t6BJaMgi+\/Hi6C56+iEPyeP1cc=",
-      "APBDProject.Client.pdb": "sha256-EebgVExHHJw9NW55galdLitVjOt+FqEMOChE+o3Fosc="
+      "APBDProject.Client.pdb": "sha256-ETWYUfQ5+Yvn2B+gn3G3Nib1tLhLVYV2GlJCMnqeGLw="
     },
     "runtime": {
       "dotnet.timezones.blat": "sha256-ootDKSA6cNAbgJLmPhrHsPVvVqkGEYdRZxucC22LWjw=",
