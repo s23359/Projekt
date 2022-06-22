@@ -111,7 +111,7 @@ namespace APBDProject.Server.Services
             try
             {
                 var dateString1 = DateTime.Now.ToString("yyyy-MM-dd");
-                var dateString2 = DateTime.Today.AddMonths(-3).ToString("yyyy-MM-dd");
+                var dateString2 = DateTime.Today.AddYears(-1).ToString("yyyy-MM-dd");
                 var json2 = await Http.GetFromJsonAsync<OhlcResponse>($"https://api.polygon.io/v2/aggs/ticker/{ticker}/range/1/day/{dateString2}/{dateString1}?adjusted=true&sort=asc&limit=120&apiKey=0YTL0kKbNICyA4p7ptpBGeK4aMGp2IjO");
                 List<OHLC> data = json2.results;
                 if (data == null)
@@ -124,7 +124,7 @@ namespace APBDProject.Server.Services
                 {
                     Data.Add(new Stock
                     {
-                        Time = startingDate.AddDays(numberOfDays / record).ToString("yyyy-MM-dd"),
+                        Time = startingDate.AddDays(numberOfDays / record),
                         o = o.o,
                         h = o.h,
                         c = o.c,

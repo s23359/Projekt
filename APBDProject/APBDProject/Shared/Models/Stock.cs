@@ -8,7 +8,7 @@ namespace APBDProject.Shared.Models
 {
     public class Stock
     {
-        public string Time { get; set; }
+        public DateTime Time { get; set; }
         public double o { get; set; }
         public double h { get; set; }
         public double c { get; set; }

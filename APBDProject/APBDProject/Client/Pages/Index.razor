@@ -1,4 +1,15 @@
 ﻿@page "/"
-
-<h3>Welcome!</h3>
-<div style="text-align:center">Welcome to our stock monitoring page. In order to use any of our functionalities, please log in</div>
+@using Syncfusion.Blazor.Charts
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Grids
+@using System.Dynamic
+@inject NavigationManager NavigationManager
+    <h3 style="text-align: center">Welcome!</h3>
+<AuthorizeView>
+    <Authorized>
+        <div style="text-align:center">Thank You for using our website. If You have any questions feel free to contact the developers. We would be happy to help :)</div>
+    </Authorized>
+    <NotAuthorized>
+        <div style="text-align:center">Welcome to our stock monitoring page. In order to use any of our functionalities, please log in</div>
+    </NotAuthorized>
+</AuthorizeView>

@@ -10,7 +10,7 @@ namespace APBDProject.Server.Models
         public int OhlcId { get; set; }
         public string Ticker { get; set; }
 
-        public string Time { get; set; }
+        public DateTime Time { get; set; }
         public double O { get; set; }
         public double C { get; set; }
         public double H { get; set; }

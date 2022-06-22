@@ -175,14 +175,13 @@ using System.Text.Json;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 62 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
+#line 54 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\TickerDetails.razor"
        
     [Parameter]
     public string text { get; set; }
 
     private TickerInfo ticker { get; set; }
     private List<Stock> Data = new List<Stock>();
-    private List<Stock> AllStocks = new List<Stock>();
 
     private string user;
     private string responseString = "";
@@ -197,30 +196,9 @@ using System.Text.Json;
 
         Stock[] data = await Http.GetFromJsonAsync<Stock[]>($"/tickers/ohlc/{text}");
 
-        AllStocks.AddRange(data);
-
         Data.AddRange(data);
 
         var response = Http.PostAsJsonAsync($"/tickers", new TickerWithOhlc { ohlcs = data, ticker = ticker });
-    }
-    private void CurrentDay()
-    {
-        var first = AllStocks.Max(e => DateTime.Parse(e.Time));
-        Stock today = AllStocks.First(e => DateTime.Parse(e.Time) == first);
-        Data = new List<Stock>();
-        Data.Add(today);
-    }
-    private void ThisWeek()
-    {
-        Data = new List<Stock>(AllStocks.Where(e => (DateTime.Parse(e.Time) > DateTime.Today.AddDays(-7))).ToList());
-    }
-    private void ThisMonth()
-    {
-        Data = new List<Stock>(AllStocks.Where(e => (DateTime.Parse(e.Time) > DateTime.Today.AddMonths(-1))).ToList());
-    }
-    private void LastThree()
-    {
-        Data = new List<Stock>(AllStocks.ToList());
     }
     private async Task AddToWatchlist()
     {

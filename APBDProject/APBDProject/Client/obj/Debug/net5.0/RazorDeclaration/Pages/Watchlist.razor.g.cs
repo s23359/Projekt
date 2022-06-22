@@ -154,14 +154,13 @@ using Syncfusion.Blazor.Charts;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 91 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
+#line 85 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Watchlist.razor"
        
     private string user;
     private TickerInfo[] tickers;
     private TickerInfo selectedTicker;
 
     private List<Stock> Data = new List<Stock>();
-    private List<Stock> AllStocks = new List<Stock>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -190,31 +189,9 @@ using Syncfusion.Blazor.Charts;
 
         Stock[] data = await Http.GetFromJsonAsync<Stock[]>($"/tickers/ohlc/{ticker}");
 
-        AllStocks = new List<Stock>();
         Data = new List<Stock>();
-
-        AllStocks.AddRange(data);
 
         Data.AddRange(data);
-    }
-    private void CurrentDay()
-    {
-        var first = AllStocks.Max(e => DateTime.Parse(e.Time));
-        Stock today = AllStocks.First(e => DateTime.Parse(e.Time) == first);
-        Data = new List<Stock>();
-        Data.Add(today);
-    }
-    private void ThisWeek()
-    {
-        Data = new List<Stock>(AllStocks.Where(e => (DateTime.Parse(e.Time) > DateTime.Today.AddDays(-7))).ToList());
-    }
-    private void ThisMonth()
-    {
-        Data = new List<Stock>(AllStocks.Where(e => (DateTime.Parse(e.Time) > DateTime.Today.AddMonths(-1))).ToList());
-    }
-    private void LastThree()
-    {
-        Data = new List<Stock>(AllStocks.ToList());
     }
 
 #line default

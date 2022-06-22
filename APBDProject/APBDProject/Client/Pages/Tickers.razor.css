@@ -10,8 +10,8 @@ input {
     margin: auto;
     display: block;
 }
-em{
-    align-content: center;
+p{
+    text-align: center;
 }
 table {
     width: 100%;

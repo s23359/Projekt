@@ -90,13 +90,6 @@ using APBDProject.Client.Shared;
 #line hidden
 #nullable disable
 #nullable restore
-#line 12 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\_Imports.razor"
-using Syncfusion.Blazor;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
 #line 13 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\_Imports.razor"
 using APBDProject.Shared.Models;
 
@@ -117,6 +110,34 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 2 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Index.razor"
+using Syncfusion.Blazor.Charts;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 3 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Index.razor"
+using Syncfusion.Blazor;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 4 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Index.razor"
+using Syncfusion.Blazor.Grids;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 5 "C:\Users\User\APBD\Projekt\APBDProject\APBDProject\Client\Pages\Index.razor"
+using System.Dynamic;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/")]
     public partial class Index : Microsoft.AspNetCore.Components.ComponentBase
     {
@@ -125,6 +146,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
         {
         }
         #pragma warning restore 1998
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
     }
 }
 #pragma warning restore 1591

@@ -1,7 +1,7 @@
 ﻿@page "/watchlist"
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Navigations
-@using Syncfusion.Blazor.Charts 
+@using Syncfusion.Blazor.Charts
 @attribute [Authorize]
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject HttpClient Http
@@ -47,7 +47,7 @@ else
     </SfGrid>
     if (selectedTicker != null)
     {
-                            <h3>@selectedTicker.ticker Details:</h3>
+        <h3>@selectedTicker.ticker Details:</h3>
         <SfTab>
             <TabItems>
                 <TabItem>
@@ -74,12 +74,6 @@ else
                                     <StockChartSeries DataSource="@Data" Type="ChartSeriesType.Candle" XName="Time" High="h" Low="h" Open="o" Close="c" Volume="v" />
                                 </StockChartSeriesCollection>
                             </SfStockChart>
-                            <table id="buttonstable" style="padding: 05em"><tr>
-                                <td><button @onclick="@(() => CurrentDay())">Current day</button></td>
-                                <td><button @onclick="@(() => ThisWeek())">1 week ago</button></td>
-                                <td><button @onclick="@(() => ThisMonth())">1 month ago</button></td>
-                                <td><button @onclick="@(() => LastThree())">3 months ago</button></td></tr>
-                            </table>
                         </div>
                     </ContentTemplate>
                 </TabItem>
@@ -94,7 +88,6 @@ else
     private TickerInfo selectedTicker;
 
     private List<Stock> Data = new List<Stock>();
-    private List<Stock> AllStocks = new List<Stock>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -123,30 +116,8 @@ else
 
         Stock[] data = await Http.GetFromJsonAsync<Stock[]>($"/tickers/ohlc/{ticker}");
 
-        AllStocks = new List<Stock>();
         Data = new List<Stock>();
-
-        AllStocks.AddRange(data);
 
         Data.AddRange(data);
-    }
-    private void CurrentDay()
-    {
-        var first = AllStocks.Max(e => DateTime.Parse(e.Time));
-        Stock today = AllStocks.First(e => DateTime.Parse(e.Time) == first);
-        Data = new List<Stock>();
-        Data.Add(today);
-    }
-    private void ThisWeek()
-    {
-        Data = new List<Stock>(AllStocks.Where(e => (DateTime.Parse(e.Time) > DateTime.Today.AddDays(-7))).ToList());
-    }
-    private void ThisMonth()
-    {
-        Data = new List<Stock>(AllStocks.Where(e => (DateTime.Parse(e.Time) > DateTime.Today.AddMonths(-1))).ToList());
-    }
-    private void LastThree()
-    {
-        Data = new List<Stock>(AllStocks.ToList());
     }
 }
